@@ -1,62 +1,196 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel API - Parcial 1
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST desarrollada con Laravel 12 para gestión de libros y categorías.
 
-## About Laravel
+## 📋 Requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP >= 8.2
+- PostgreSQL >= 12
+- Composer
+- Extensiones PHP: OpenSSL, PDO, Mbstring, Tokenizer, XML, pgsql
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Instalación
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Clonar el repositorio
+```bash
+git clone <url-del-repositorio>
+cd Parcial1_Laravel
+```
 
-## Learning Laravel
+### 2. Instalar dependencias
+```bash
+composer install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 3. Configurar variables de entorno
+```bash
+# Copiar el archivo de ejemplo
+cp .env.example .env
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# Generar APP_KEY
+php artisan key:generate
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Configurar base de datos en `.env`
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=laravel
+DB_USERNAME=postgres
+DB_PASSWORD=tu_contraseña
+```
 
-## Laravel Sponsors
+### 5. Ejecutar migraciones y seeders
+```bash
+# Crear tablas en la base de datos
+php artisan migrate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Poblar con datos de prueba (10 categorías y 20 libros)
+php artisan db:seed
+```
 
-### Premium Partners
+### 6. Iniciar servidor de desarrollo
+```bash
+php artisan serve
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+La API estará disponible en: `http://localhost:8000`
 
-## Contributing
+## 📚 Estructura de la Base de Datos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Tabla: `categories`
+- `id_category` (PK): Identificador único
+- `category_name`: Nombre de la categoría
+- `category_description`: Descripción detallada
+- `category_priority`: Prioridad (1-10)
+- `category_status`: Estado activo/inactivo (boolean)
 
-## Code of Conduct
+### Tabla: `books`
+- `id_book` (PK): Identificador único
+- `book_name`: Nombre del libro
+- `book_author_name`: Nombre del autor
+- `book_price`: Precio (double)
+- `book_stock`: Cantidad en stock (integer)
+- `book_status`: Estado disponible/no disponible (boolean)
+- `category_id` (FK): Relación con categorías
+- `barcode`: Código de barras (EAN-13)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Relación:** Una categoría puede tener muchos libros (1:N)
 
-## Security Vulnerabilities
+## 🔌 Endpoints de la API
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Categorías
 
-## License
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/categories` | Listar todas las categorías |
+| POST | `/api/categories` | Crear nueva categoría |
+| GET | `/api/categories/{id}` | Ver detalle de categoría |
+| PUT/PATCH | `/api/categories/{id}` | Actualizar categoría |
+| DELETE | `/api/categories/{id}` | Eliminar categoría |
+| GET | `/api/categories/active/with-books` | Listar categorías activas con sus libros |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# TALLER-LARAVEL-API
+### Libros
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/books` | Listar todos los libros |
+| POST | `/api/books` | Crear nuevo libro |
+| GET | `/api/books/{id}` | Ver detalle de libro (incluye categoría) |
+| PUT/PATCH | `/api/books/{id}` | Actualizar libro |
+| DELETE | `/api/books/{id}` | Eliminar libro |
+
+## 📝 Ejemplos de Uso
+
+### Crear una categoría
+```bash
+POST /api/categories
+Content-Type: application/json
+
+{
+    "category_name": "Ciencia Ficción",
+    "category_description": "Libros de ciencia ficción y fantasía",
+    "category_priority": 5,
+    "category_status": true
+}
+```
+
+### Crear un libro
+```bash
+POST /api/books
+Content-Type: application/json
+
+{
+    "book_name": "Dune",
+    "book_author_name": "Frank Herbert",
+    "book_price": 25.99,
+    "book_stock": 15,
+    "book_status": true,
+    "category_id": 1,
+    "barcode": "9780441172719"
+}
+```
+
+### Ver categorías activas con sus libros
+```bash
+GET /api/categories/active/with-books
+```
+
+## ✅ Validaciones
+
+### Categorías (Crear)
+- `category_name`: Requerido, string, máximo 255 caracteres
+- `category_description`: Requerido, string
+- `category_priority`: Requerido, entero, mínimo 0
+- `category_status`: Requerido, booleano
+
+### Libros (Crear)
+- `book_name`: Requerido, string, máximo 255 caracteres
+- `book_author_name`: Requerido, string, máximo 255 caracteres
+- `book_price`: Requerido, numérico, mínimo 0
+- `book_stock`: Requerido, entero, mínimo 0
+- `book_status`: Requerido, booleano
+- `category_id`: Opcional, debe existir en la tabla categories
+- `barcode`: Opcional, string, máximo 255 caracteres
+
+## 🔧 Comandos Útiles
+
+```bash
+# Limpiar caché
+php artisan cache:clear
+php artisan config:clear
+
+# Refrescar base de datos (elimina todos los datos)
+php artisan migrate:fresh --seed
+
+# Ver rutas disponibles
+php artisan route:list
+
+# Ejecutar tests
+php artisan test
+```
+
+## 📖 Documentación Adicional
+
+Consulta el archivo `API_DOCUMENTATION.md` para documentación detallada de todos los endpoints.
+
+## 🛠️ Tecnologías Utilizadas
+
+- Laravel 12
+- PHP 8.2
+- PostgreSQL
+- Laravel Sanctum (autenticación API)
+- Faker (generación de datos de prueba)
+
+## 👨‍💻 Desarrollo
+
+Este proyecto utiliza:
+- **Form Requests** para validaciones
+- **Eloquent ORM** para relaciones de base de datos
+- **Factories** y **Seeders** para datos de prueba
+- **API Resources** para controladores RESTful
+
+## 📄 Licencia
+
+MIT License
