@@ -18,10 +18,20 @@ class Book extends Model
         'book_price',
         'book_stock',
         'book_status',
+        'category_id',
+        'barcode',
     ];
 
     protected $casts = [
         'book_price' => 'double',
         'book_status' => 'boolean',
     ];
+
+    /**
+     * Relación: Un libro pertenece a una categoría (N:1)
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id_category');
+    }
 }

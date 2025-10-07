@@ -27,6 +27,8 @@ class UpdateBookRequest extends FormRequest
             'book_price' => 'sometimes|numeric|min:0',
             'book_stock' => 'sometimes|integer|min:0',
             'book_status' => 'sometimes|boolean',
+            'category_id' => 'sometimes|nullable|exists:categories,id_category',
+            'barcode' => 'sometimes|nullable|string|max:255',
         ];
     }
 
@@ -45,6 +47,7 @@ class UpdateBookRequest extends FormRequest
             'book_stock.integer' => 'El stock debe ser un número entero',
             'book_stock.min' => 'El stock debe ser mayor o igual a 0',
             'book_status.boolean' => 'El estado debe ser verdadero o falso',
+            'category_id.exists' => 'La categoría seleccionada no existe',
         ];
     }
 }

@@ -22,6 +22,8 @@ class BookFactory extends Factory
             'book_price' => fake()->randomFloat(2, 9.99, 999.99),
             'book_stock' => fake()->numberBetween(0, 100),
             'book_status' => fake()->boolean(80), // 80% chance of being active
+            'category_id' => null, // Se puede asignar manualmente o dejarlo null
+            'barcode' => fake()->ean13(), // Genera código de barras tipo EAN-13
         ];
     }
 }
