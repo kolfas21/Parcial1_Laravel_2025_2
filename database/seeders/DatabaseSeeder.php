@@ -20,9 +20,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // Llamar al BookSeeder para crear registros de libros automáticamente
+        // Llamar a los seeders en orden correcto
+        // IMPORTANTE: CategorySeeder PRIMERO porque Books depende de Categories
         $this->call([
-            BookSeeder::class,
+            CategorySeeder::class, // Primero crear categorías
+            BookSeeder::class,     // Luego crear libros (que usan category_id)
         ]);
     }
 }

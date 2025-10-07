@@ -29,9 +29,13 @@ class BookController extends Controller
 
     /**
      * Display the specified resource.
+     * Incluye la información completa de la categoría relacionada
      */
     public function show(Book $book)
     {
+        // Cargar la relación de categoría
+        $book->load('category');
+        
         return response()->json($book);
     }
 

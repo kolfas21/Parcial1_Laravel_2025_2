@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,8 @@ class BookFactory extends Factory
             'book_price' => fake()->randomFloat(2, 9.99, 999.99),
             'book_stock' => fake()->numberBetween(0, 100),
             'book_status' => fake()->boolean(80), // 80% chance of being active
-            'category_id' => null, // Se puede asignar manualmente o dejarlo null
+            // Asigna un category_id aleatorio de las categorías existentes
+            'category_id' => Category::inRandomOrder()->first()?->id_category ?? null,
             'barcode' => fake()->ean13(), // Genera código de barras tipo EAN-13
         ];
     }
