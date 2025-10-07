@@ -51,4 +51,18 @@ class CategoryController extends Controller
         $category->delete();
         return response()->json(null, 204);
     }
+
+    /**
+     * Lista todas las categorías con estado activo (true)
+     * e incluye los libros relacionados de cada categoría.
+     */
+    public function activeWithBooks()
+    {
+        // Filtrar categorías con status = true y cargar sus libros relacionados
+        $categories = Category::where('category_status', true)
+            ->with('books') // Eager loading de la relación books
+            ->get();
+        
+        return response()->json($categories);
+    }
 }
